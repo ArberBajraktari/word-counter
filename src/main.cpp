@@ -1,6 +1,4 @@
-#include <string>
 #include <iostream>
-#include <dirent.h>
 #include <vector>
 #include <filesystem>
 
@@ -29,6 +27,12 @@ std::vector<std::string> getAllFiles(fs::path const & root, std::string const & 
 
 
 int main() {
-    std::vector<std::string> all = getAllFiles("/Users/agron/Desktop", ".html");
-    std::cout << "Number of files is: " << all.size() << std::endl;
+    std::string path;
+    std::string ext;
+    std::cout << "Enter path please: ";
+    std::cin >> path;
+    std::cout << "Enter extension please: ";
+    std::cin >> ext;
+    std::vector<std::string> allFiles = getAllFiles(path, ext);
+    std::cout << allFiles.size() << std::endl;
 }
