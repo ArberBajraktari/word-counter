@@ -9,4 +9,4 @@ start: word-counter
 
 word-counter: src/main.cpp
 	mkdir -p $(OBJDIR)
-	$(CC) -o $(OBJDIR)/word-counter $(SRCDIR)/main.cpp
+	$(CC) -o $(OBJDIR)/word-counter $(SRCDIR)/main.cpp -std=c++17
