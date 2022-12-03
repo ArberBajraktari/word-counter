@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "/Volumes/OS X/dev/CLion.app/Contents/bin/cmake/mac/bin/cmake" --regenerate-during-build -S/Users/agron/CLionProjects/word-counter -B/Users/agron/CLionProjects/word-counter/cmake-build-debug
+  command = "/Volumes/OS X/dev/CLion.app/Contents/bin/cmake/mac/bin/cmake" --regenerate-during-build -S/Users/agron/Documents/FH/repos/word-counter -B/Users/agron/Documents/FH/repos/word-counter/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 

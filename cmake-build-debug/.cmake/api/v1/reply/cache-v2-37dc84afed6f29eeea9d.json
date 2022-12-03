@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/agron/CLionProjects/word-counter/cmake-build-debug"
+			"value" : "/Users/agron/Documents/FH/repos/word-counter/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/agron/CLionProjects/word-counter"
+			"value" : "/Users/agron/Documents/FH/repos/word-counter"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1087,7 +1087,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/agron/CLionProjects/word-counter/cmake-build-debug"
+			"value" : "/Users/agron/Documents/FH/repos/word-counter/cmake-build-debug"
 		},
 		{
 			"name" : "word_counter_IS_TOP_LEVEL",
@@ -1111,7 +1111,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/agron/CLionProjects/word-counter"
+			"value" : "/Users/agron/Documents/FH/repos/word-counter"
 		}
 	],
 	"kind" : "cache",
