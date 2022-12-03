@@ -98,7 +98,29 @@ std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> fil
     return allFilesWords;
 }
 
-std::map<std::string, unsigned int> sortMap(const std::vector<std::string> files){
+bool cmp(std::pair<std::string, int>& a,
+         std::pair<std::string, int>& b)
+{
+    return a.second < b.second;
+}
+
+std::map<std::string, unsigned int> sortMap(const std::map<std::string, unsigned int> &M){
+    // Declare vector of pairs
+    std::vector<std::pair<std::string, int> > A;
+
+    // Copy key-value pair from Map
+    // to vector of pairs
+    for (auto& it : M) {
+        A.push_back(it);
+    }
+
+    // Sort using comparator function
+    sort(A.begin(), A.end(), cmp);
+
+    std::map<std::string, unsigned int> map;
+    std::copy(A.begin(), A.end(), std::inserter(map, map.begin()));
+
+    return map;
 
 }
 
@@ -114,6 +136,7 @@ int main() {
     //wordCount(fileName);
     std::map<std::string, unsigned int> map;
     map = loopFiles(allFiles);
+    map = sortMap(map);
 
     PrintMap(map);
 }
