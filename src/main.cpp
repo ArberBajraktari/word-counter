@@ -23,7 +23,7 @@ std::vector<std::string> getAllFiles(fs::path const & root, std::string const & 
         for (auto const & entry : fs::recursive_directory_iterator(root))
         {
             if (fs::is_regular_file(entry) && entry.path().extension() == ext)
-                paths.emplace_back(entry.path().filename());
+                paths.emplace_back(entry.path());
         }
     }
     return paths;
@@ -39,7 +39,7 @@ void PrintMap(std::map<KTy, Ty> map)
         std::cout << p->first << ": " << p->second << std::endl;
 }
 
-int wordCount(const char* fileName) {
+std::map<std::string, unsigned int> wordCount(const std::string &fileName) {
     // "C:\\Users\\user\\Documents\\MyFile.txt"
 
     // Will store the word and count.
@@ -67,15 +67,40 @@ int wordCount(const char* fileName) {
             std::stringstream consoleOutput;
             consoleOutput << "Cant";
             consoleOutput << "Open";
-            return EXIT_FAILURE;
+            return wordsCount;
         }
-        // Print the words map.
-        PrintMap(wordsCount);
     }
-    return EXIT_SUCCESS;
+    return wordsCount;
 };
 
 
+std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned int> first_map, std::map<std::string, unsigned int> second_map){
+
+    for (auto const& [key, val] : second_map)
+    {
+        //Look if it's already there.
+        if (first_map.find(key) == first_map.end()) // Then we've encountered the word for a first time.
+            first_map[key] += second_map[key];
+        else // Then we've already seen it before.
+            first_map[key]++; // Just increment it.
+    }
+
+    return first_map;
+}
+
+std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> files){
+    std::map<std::string, unsigned int> allFilesWords;
+    for (auto it = begin (files); it != end (files); ++it) {
+        std::map<std::string, unsigned int> temp = wordCount( *it);
+        allFilesWords = addMapToMap(allFilesWords, temp);
+    }
+
+    return allFilesWords;
+}
+
+std::map<std::string, unsigned int> sortMap(const std::vector<std::string> files){
+
+}
 
 int main() {
     std::string path;
@@ -86,8 +111,10 @@ int main() {
     std::cin >> ext;
     std::vector<std::string> allFiles = getAllFiles(path, ext);
     std::cout << allFiles.size() << std::endl;
+    //wordCount(fileName);
+    std::map<std::string, unsigned int> map;
+    map = loopFiles(allFiles);
 
-    static const char* fileName = "C:\\\\Users\\\\user\\\\Documents\\\\MyFile.txt";
-    wordCount(fileName);
+    PrintMap(map);
 }
 
