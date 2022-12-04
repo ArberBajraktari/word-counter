@@ -3,18 +3,37 @@
 #include <filesystem>
 #include <map> // A map will be used to count the words.
 #include <fstream> // Will be used to read from a file.
-#include <string> // The map's key value.
 #include <sstream>
 
 namespace fs = std::__fs::filesystem;
 
 
+
+/**
+ * \brief   Used for debugging
+ */
+template <class KTy, class Ty>
+void PrintMap(std::map<KTy, Ty> map)
+{
+    typedef typename std::map<KTy, Ty>::iterator iterator;
+    for (iterator p = map.begin(); p != map.end(); p++)
+        std::cout << p->first << ": " << p->second << std::endl;
+}
+
+/**
+ * \brief   Used for debugging
+ */
+void PrintVector(std::vector<std::pair<std::string, int >> &vec)
+{
+    for (auto i: vec)
+        std::cout << i.first << " -> " << i.second <<std::endl;
+}
+
 /**
  * \brief   Return the filenames of all files that have the specified extension
  *          in the specified directory and all subdirectories.
- *
  */
-std::vector<std::string> getAllFiles(fs::path const & root, std::string const & ext)
+std::vector<std::string> getAllFiles(fs::path const &root, std::string const &ext)
 {
     std::vector<std::string> paths;
 
@@ -29,16 +48,9 @@ std::vector<std::string> getAllFiles(fs::path const & root, std::string const & 
     return paths;
 }
 
-
-//Will be used to print the map later.
-template <class KTy, class Ty>
-void PrintMap(std::map<KTy, Ty> map)
-{
-    typedef typename std::map<KTy, Ty>::iterator iterator;
-    for (iterator p = map.begin(); p != map.end(); p++)
-        std::cout << p->first << ": " << p->second << std::endl;
-}
-
+/**
+ * \brief   This function counts the words and returns a map of them
+ */
 std::map<std::string, unsigned int> wordCount(const std::string &fileName) {
     // "C:\\Users\\user\\Documents\\MyFile.txt"
 
@@ -73,8 +85,10 @@ std::map<std::string, unsigned int> wordCount(const std::string &fileName) {
     return wordsCount;
 };
 
-
-std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned int> first_map, std::map<std::string, unsigned int> second_map){
+/**
+ * \brief   This function adds a map into another map and returns the result
+ */
+std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned int> &first_map, std::map<std::string, unsigned int> &second_map){
 
     for (auto const& [key, val] : second_map)
     {
@@ -88,7 +102,11 @@ std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned i
     return first_map;
 }
 
-std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> files){
+/**
+ * \brief   Loop through all the files that were found in the specified directory
+ *          and save the words and their count in a map
+ */
+std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> &files){
     std::map<std::string, unsigned int> allFilesWords;
     for (auto it = begin (files); it != end (files); ++it) {
         std::map<std::string, unsigned int> temp = wordCount( *it);
@@ -98,46 +116,80 @@ std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> fil
     return allFilesWords;
 }
 
-bool cmp(std::pair<std::string, int>& a,
-         std::pair<std::string, int>& b)
-{
-    return a.second < b.second;
+/**
+ * \brief   Returns a stringstream version of all the result in this format:
+ *          "word" -> "count"
+ *          In a descending order
+ */
+std::stringstream getResult(std::vector<std::pair<std::string, int >> &vec){
+    std::stringstream temp;
+    for (auto i: vec){
+        temp << i.first;
+        temp << " -> ";
+        temp << i.second;
+        temp << std::endl;
+    }
+    return temp;
 }
 
-std::map<std::string, unsigned int> sortMap(const std::map<std::string, unsigned int> &M){
+/**
+ * \brief   This is a compare function used as a parameter for the sorting of the
+ *          map/vector<pair>
+ *          It helps us sort in a descending order
+ */
+bool cmp(std::pair<std::string, int> &a, std::pair<std::string, int> &b){
+    return a.second > b.second;
+}
+
+/**
+ * \brief   This function converts a map into a vector and then sorts it
+ */
+std::vector<std::pair<std::string,int>> sortMapIntoVector(const std::map<std::string, unsigned int> &map){
     // Declare vector of pairs
-    std::vector<std::pair<std::string, int> > A;
+    std::vector<std::pair<std::string, int> > temp;
 
     // Copy key-value pair from Map
     // to vector of pairs
-    for (auto& it : M) {
-        A.push_back(it);
+    for (auto& it : map) {
+        temp.push_back(it);
     }
 
     // Sort using comparator function
-    sort(A.begin(), A.end(), cmp);
+    sort(temp.begin(), temp.end(), cmp);
 
-    std::map<std::string, unsigned int> map;
-    std::copy(A.begin(), A.end(), std::inserter(map, map.begin()));
-
-    return map;
-
+    return temp;
 }
 
 int main() {
+    // Declare vars that will be used below
     std::string path;
     std::string ext;
+    std::map<std::string, unsigned int> map;
+    std::vector<std::pair<std::string, int >> results;
+    std::stringstream res;
+
+    // Get path and extension from user
     std::cout << "Enter path please: ";
     std::cin >> path;
     std::cout << "Enter extension please: ";
     std::cin >> ext;
-    std::vector<std::string> allFiles = getAllFiles(path, ext);
-    std::cout << allFiles.size() << std::endl;
-    //wordCount(fileName);
-    std::map<std::string, unsigned int> map;
-    map = loopFiles(allFiles);
-    map = sortMap(map);
 
-    PrintMap(map);
+    // Get all files recursively from the directory
+    // From subdirectories as well
+    std::vector<std::string> allFiles = getAllFiles(path, ext);
+
+    // Save all the words and occurrences in a map<string, int>
+    map = loopFiles(allFiles);
+
+    // Convert the map into a vector of pairs, as it is easier to
+    // sort it from the value compared to a map
+    results = sortMapIntoVector(map);
+
+    // Convert the Vector of pairs into a stringstream
+    res = getResult(results);
+
+    // Display the Result
+    std::cout << "The end result:" <<std::endl;
+    std::cout << res.str();
 }
 
