@@ -1,5 +1,9 @@
 # word-counter
 
+Collaborators
+- Arber Bajraktari
+- Anis Shkembi
+
 Project Execution
 - Run the makefile in terminal
   - It will require 2 parameters
