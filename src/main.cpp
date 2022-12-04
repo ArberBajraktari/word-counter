@@ -1,11 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <filesystem>
+#include <experimental/filesystem>
 #include <map> // A map will be used to count the words.
 #include <fstream> // Will be used to read from a file.
-#include <sstream>
 
-namespace fs = std::__fs::filesystem;
+namespace fs = std::experimental::filesystem;
 
 
 /**
@@ -39,7 +38,7 @@ auto getAllFiles = [](fs::path const &root, std::string const &ext){
         for (auto const & entry : fs::recursive_directory_iterator(root))
         {
             if (fs::is_regular_file(entry) && entry.path().extension() == ext)
-                paths.emplace_back(entry.path());
+                paths.emplace_back(entry.path().string());
         }
     }
     return paths;
