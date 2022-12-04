@@ -154,7 +154,7 @@ auto sortMap = [](const std::map<std::string, unsigned int> &map){
 };
 
 
-int main() {
+int main(int argc, char** argv) {
     // Declare vars that will be used below
     std::string path;
     std::string ext;
@@ -162,11 +162,16 @@ int main() {
     std::vector<std::pair<std::string, int >> results;
     std::stringstream res;
 
-    // Get path and extension from user
-    std::cout << "Enter path please: ";
-    std::cin >> path;
-    std::cout << "Enter extension please: ";
-    std::cin >> ext;
+    if(argc == 3){
+        path = argv[1];
+        ext = argv[2];
+    }else{
+        // Get path and extension from user
+        std::cout << "Enter path please: ";
+        std::cin >> path;
+        std::cout << "Enter extension please: ";
+        std::cin >> ext;
+    }
 
     // Get all files recursively from the directory
     // From subdirectories as well
