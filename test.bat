@@ -1,5 +1,5 @@
 @echo off
 
 title This is your first batch script!
-make test arg1=. arg2=.cpp
+make test arg1=./src arg2=.cpp
 
