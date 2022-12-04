@@ -5,7 +5,7 @@ SRCDIR  = src
 OBJDIR  = output
 CONF 	= -std=c++17 -lstdc++fs
 
-start: word-counter
+test: word-counter
 	$(OBJDIR)/word-counter $(arg1) $(arg2)
 
 run: word-counter
