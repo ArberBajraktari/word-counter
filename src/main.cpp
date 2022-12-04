@@ -6,7 +6,6 @@
 
 namespace fs = std::experimental::filesystem;
 
-
 /**
  * \brief   Used for debugging
  */
@@ -68,13 +67,6 @@ auto countWords = [](const std::string &fileName) {
                 else // Then we've already seen it before.
                     wordsCount[word]++; // Just increment it.
             }
-        else  // We couldn't open the file. Report the error in the error stream.
-        {
-            std::stringstream consoleOutput;
-            consoleOutput << "Cant";
-            consoleOutput << "Open";
-            return wordsCount;
-        }
     }
     return wordsCount;
 };

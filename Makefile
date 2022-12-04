@@ -14,3 +14,4 @@ run: word-counter
 word-counter: src/main.cpp
 	mkdir -p $(OBJDIR)
 	$(CC) -o $(OBJDIR)/word-counter $(SRCDIR)/main.cpp $(CONF)
+
