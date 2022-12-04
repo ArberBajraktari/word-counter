@@ -8,13 +8,11 @@
 namespace fs = std::__fs::filesystem;
 
 
-
 /**
  * \brief   Used for debugging
  */
 template <class KTy, class Ty>
-void PrintMap(std::map<KTy, Ty> map)
-{
+ void PrintMap(std::map<KTy, Ty> map){
     typedef typename std::map<KTy, Ty>::iterator iterator;
     for (iterator p = map.begin(); p != map.end(); p++)
         std::cout << p->first << ": " << p->second << std::endl;
@@ -23,8 +21,8 @@ void PrintMap(std::map<KTy, Ty> map)
 /**
  * \brief   Used for debugging
  */
-void PrintVector(std::vector<std::pair<std::string, int >> &vec)
-{
+template <class _T1, class _T2>
+void PrintVector(std::vector<std::pair<_T1, _T2>> &vec){
     for (auto i: vec)
         std::cout << i.first << " -> " << i.second <<std::endl;
 }
@@ -33,8 +31,7 @@ void PrintVector(std::vector<std::pair<std::string, int >> &vec)
  * \brief   Return the filenames of all files that have the specified extension
  *          in the specified directory and all subdirectories.
  */
-std::vector<std::string> getAllFiles(fs::path const &root, std::string const &ext)
-{
+auto getAllFiles = [](fs::path const &root, std::string const &ext){
     std::vector<std::string> paths;
 
     if (fs::exists(root) && fs::is_directory(root))
@@ -46,14 +43,12 @@ std::vector<std::string> getAllFiles(fs::path const &root, std::string const &ex
         }
     }
     return paths;
-}
+};
 
 /**
  * \brief   This function counts the words and returns a map of them
  */
-std::map<std::string, unsigned int> wordCount(const std::string &fileName) {
-    // "C:\\Users\\user\\Documents\\MyFile.txt"
-
+auto countWords = [](const std::string &fileName) {
     // Will store the word and count.
     std::map<std::string, unsigned int> wordsCount;
     {
@@ -88,7 +83,7 @@ std::map<std::string, unsigned int> wordCount(const std::string &fileName) {
 /**
  * \brief   This function adds a map into another map and returns the result
  */
-std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned int> &first_map, std::map<std::string, unsigned int> &second_map){
+auto addMapToMap = [](std::map<std::string, unsigned int> &first_map, std::map<std::string, unsigned int> &second_map){
 
     for (auto const& [key, val] : second_map)
     {
@@ -100,28 +95,27 @@ std::map<std::string, unsigned int> addMapToMap(std::map<std::string, unsigned i
     }
 
     return first_map;
-}
+};
 
 /**
  * \brief   Loop through all the files that were found in the specified directory
  *          and save the words and their count in a map
  */
-std::map<std::string, unsigned int> loopFiles(const std::vector<std::string> &files){
+auto loopFiles =[](const std::vector<std::string> &files){
     std::map<std::string, unsigned int> allFilesWords;
     for (auto it = begin (files); it != end (files); ++it) {
-        std::map<std::string, unsigned int> temp = wordCount( *it);
+        std::map<std::string, unsigned int> temp = countWords( *it);
         allFilesWords = addMapToMap(allFilesWords, temp);
     }
-
     return allFilesWords;
-}
+};
 
 /**
  * \brief   Returns a stringstream version of all the result in this format:
  *          "word" -> "count"
  *          In a descending order
  */
-std::stringstream getResult(std::vector<std::pair<std::string, int >> &vec){
+auto getResult = [](std::vector<std::pair<std::string, int >> &vec) {
     std::stringstream temp;
     for (auto i: vec){
         temp << i.first;
@@ -130,7 +124,7 @@ std::stringstream getResult(std::vector<std::pair<std::string, int >> &vec){
         temp << std::endl;
     }
     return temp;
-}
+};
 
 /**
  * \brief   This is a compare function used as a parameter for the sorting of the
@@ -144,7 +138,7 @@ bool cmp(std::pair<std::string, int> &a, std::pair<std::string, int> &b){
 /**
  * \brief   This function converts a map into a vector and then sorts it
  */
-std::vector<std::pair<std::string,int>> sortMapIntoVector(const std::map<std::string, unsigned int> &map){
+auto sortMap = [](const std::map<std::string, unsigned int> &map){
     // Declare vector of pairs
     std::vector<std::pair<std::string, int> > temp;
 
@@ -158,7 +152,8 @@ std::vector<std::pair<std::string,int>> sortMapIntoVector(const std::map<std::st
     sort(temp.begin(), temp.end(), cmp);
 
     return temp;
-}
+};
+
 
 int main() {
     // Declare vars that will be used below
@@ -183,7 +178,7 @@ int main() {
 
     // Convert the map into a vector of pairs, as it is easier to
     // sort it from the value compared to a map
-    results = sortMapIntoVector(map);
+    results = sortMap(map);
 
     // Convert the Vector of pairs into a stringstream
     res = getResult(results);
@@ -192,4 +187,3 @@ int main() {
     std::cout << "The end result:" <<std::endl;
     std::cout << res.str();
 }
-
